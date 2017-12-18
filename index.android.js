@@ -28,11 +28,17 @@ var WebViewAndroid = createClass({
     geolocationEnabled: PropTypes.bool,
     allowUrlRedirect: PropTypes.bool,
     builtInZoomControls: PropTypes.bool,
+    onShouldStartLoadWithRequest: PropTypes.func,
     onNavigationStateChange: PropTypes.func
   },
   _onNavigationStateChange: function(event) {
     if (this.props.onNavigationStateChange) {
       this.props.onNavigationStateChange(event.nativeEvent);
+    }
+  },
+  _onShouldStartLoadWithRequest: function(event) {
+    if (this.props.onShouldStartLoadWithRequest) {
+      this.props.onShouldStartLoadWithRequest(event.nativeEvent);
     }
   },
   goBack: function() {
@@ -78,7 +84,7 @@ var WebViewAndroid = createClass({
     );
   },
   render: function() {
-    return <RNWebViewAndroid ref={WEBVIEW_REF} {...this.props} onNavigationStateChange={this._onNavigationStateChange} />;
+    return <RNWebViewAndroid ref={WEBVIEW_REF} {...this.props} onNavigationStateChange={this._onNavigationStateChange}  onShouldStartLoadWithRequest={this._onShouldStartLoadWithRequest} />;
   },
   _getWebViewHandle: function() {
     return RN.findNodeHandle(this.refs[WEBVIEW_REF]);
